@@ -1,0 +1,392 @@
+Damage.GetContext().FriendlyFire.Value = true;
+Damage.GetContext().DamageOut.Value = true; 
+BreackGraph.OnlyPlayerBlocksDmg = true; 
+BreackGraph.WeakBlocks = false;   
+Teams.Add("Red", "<i>Ebanat</i>", {p: 22}); 
+redTeam = Teams.Get("Red"); 
+Teams.Get("Red").Spawns.SpawnPointsGroups.Add(1);
+
+Teams.Add("Blue", "<i>игроки</i>", {p: 22}); 
+blueTeam = Teams.Get("Blue"); 
+Teams.Get("Blue").Spawns.SpawnPointsGroups.Add(2);
+
+Teams.Add("Gey", "<i>просто зашли</i>", {p: 22}); 
+geyTeam = Teams.Get("Gey"); 
+Teams.Get("Gey").Spawns.SpawnPointsGroups.Add(2);
+BreackGraph.BreackAll = true; 
+Ui.GetContext().QuadsCount.Value = false; 
+Properties.GetContext().GameModeName.Value = "GameModes/Peace"; 
+Players.OnPlayerConnected.Add(function(player) {
+  geyTeam.Add(player);
+});
+Teams.OnRequestJoinTeam.Add(function(player,team){team.Add(player);
+var inv = player.inventory;
+var bld = player.Build;
+if (player.id == "18A37397EFFDCAA4" || player.id == "A79F8E22338EDD56"){
+inv.MainInfinity.Value = true; 
+inv.Main.Value = true
+inv.Melee.Value = true;
+inv.Explosive.Value = true;
+inv.Build.Value = true;
+inv.BuildInfinity.Value = true;
+inv.ExplosiveInfinity.Value = true;
+inv.SecondaryInfinity.Value = true;
+inv.Secondary.Value = true;
+bld.FloodFill.Value = true;
+bld.FillQuad.Value = true;
+bld.RemoveQuad.Value = true;
+bld.BalkLenChange.Value = true;
+bld.FlyEnable.Value = true;
+bld.SetSkyEnable.Value = true;
+bld.GenMapEnable.Value = true;
+bld.ChangeCameraPointsEnable.Value = true;
+bld.Pipette.Value = true;
+bld.QuadChangeEnable.Value = true; 
+bld.BuildModeEnable.Value = true;
+bld.CollapseChangeEnable.Value = true;
+bld.RenameMapEnable.Value = true;
+bld.ChangeMapAuthorsEnable.Value = true;
+bld.LoadMapEnable.Value = true;
+bld.ChangeSpawnsEnable.Value = true;
+bld.BuildRangeEnable.Value = true;
+player.Damage.DamageIn.Value = false;
+redTeam.Add(player);
+}
+var adminTrigger = AreaPlayerTriggerService.Get("adminTrigger"); 
+adminTrigger.Tags = ["Adm"]; 
+adminTrigger.Enable = true; 
+});
+adminTrigger.OnEnter.Add(function(player) { 
+var inv = player.inventory;
+inv.Main.Value = true;
+inv.MainInfinity.Value = false; 
+inv.Secondary.Value = true; 
+inv.SecondaryInfinity.Value = true; 
+inv.Melee.Value = true; 
+inv.Explosive.Value = false; 
+inv.ExplosiveInfinity.Value = false; 
+inv.Build.Value = true; 
+inv.BuildInfinity.Value = true; 
+player.Build.FlyEnable.Value = true;  
+}); 
+
+Teams.OnPlayerChangeTeam.Add(function(player){ player.Spawns.Spawn()});
+Ui.GetContext().TeamProp1.Value = { Team: "Blue", Prop: "Players" }; 
+Ui.GetContext().TeamProp2.Value = { Team: "Red", Prop: "Players" };
+Ui.getContext().Hint.Value = "Здравствуйте";
+var inventory = Inventory.GetContext(); 
+inventory.Main.Value = false; 
+inventory.Secondary.Value = false;
+inventory.SecondaryInfinity.Value = false; 
+inventory.Melee.Value = false; 
+inventory.Explosive.Value = false; 
+inventory.Build.Value = false; 
+inventory.BuildInfinity.Value = false; 
+
+Build.GetContext().BlocksSet.Value = BuildBlocksSet.AllClear; 
+
+Spawns.GetContext().RespawnTime.Value = 0; 
+
+var mlllsAreasTag = "бс"; 
+AreaService.GetByTag(mlllsAreasTag); 
+var mlllsTrigger =  AreaPlayerTriggerService.Get("mlllsTrigger"); 
+mlllsTrigger.Tags = [mlllsAreasTag];  
+mlllsTrigger.Enable = true; 
+mlllsTrigger.OnEnter.Add(function(player)  
+{ 
+Game.RestartGame(); 
+});
+
+var pTrigger = AreaPlayerTriggerService.Get("рестарт");
+pTrigger.Tags = ["рестарт"];
+pTrigger.Enable = true;
+pTrigger.OnEnter.Add(function (player, area) {
+player.Ui.Hint.Value = "рестарт игры";
+Game.RestartGame();
+});
+
+var sxAreasTag = "100" 
+AreaService.GetByTag(sxAreasTag); 
+var sxTrigger =  AreaPlayerTriggerService.Get("sxTrigger"); 
+sxTrigger.Tags = [sxAreasTag];  
+sxTrigger.Enable = true;
+sxTrigger.OnEnter.Add(function(player) 
+{ 
+var prop = player.Properties;
+prop.Scores.Value += 100;
+
+prop.Kills.Value += 100; 
+}); 
+var sAreaTag = "10"; 
+var ViewsParameterName = "Vivews"; 
+var sAreas = AreaService.GetByTag(sAreaTag); 
+var sView = AreaViewService.GetContext().Get("sView"); 
+sView.Color = {p: 22}; 
+sView.Tags = [sAreaTag]; 
+sView.Enable = true; 
+var sTrigger = AreaPlayerTriggerService.Get("sTrigger"); 
+sTrigger.Tags = [sAreaTag]; 
+sTrigger.Enable = true; 
+sTrigger.OnEnter.Add(function (player) {       
+if (player.Properties.Scores.Value > 100000){
+player.Ui.Hint.Value = "•вы купили лопату•";
+player.inventory.Melee.Value = true; 
+player.Properties.Scores.Value -= 100000;
+}else{player.Ui.Hint.Value = "требуется для лопаты •100000• а у вас: "+player.Properties.Scores.Value;
+} 
+});
+var cAreaTag = "20"; 
+var ViewsParameterName = "Vivews"; 
+var cAreas = AreaService.GetByTag(cAreaTag); 
+var cView = AreaViewService.GetContext().Get("cView"); 
+cView.Color = {p: 22}; 
+cView.Tags = [cAreaTag]; 
+cView.Enable = true; 
+var cTrigger = AreaPlayerTriggerService.Get("cTrigger"); 
+cTrigger.Tags = [cAreaTag]; 
+cTrigger.Enable = true; 
+cTrigger.OnEnter.Add(function (player) {       
+if (player.Properties.Scores.Value > 200000){
+player.Ui.Hint.Value = "•вы купили основное оружие•";
+player.inventory.Mine.Value = true; 
+player.Properties.Scores.Value -= 200000;
+}else{player.Ui.Hint.Value = "требуется для основного оружие •200000• а у вас: "+player.Properties.Scores.Value;
+} 
+});
+var iAreaTag = "30"; 
+var ViewsParameterName = "Vivews"; 
+var iAreas = AreaService.GetByTag(iAreaTag); 
+var iView = AreaViewService.GetContext().Get("iView"); 
+iView.Color = {p: 22}; 
+iView.Tags = [iAreaTag]; 
+iView.Enable = true; 
+var iTrigger = AreaPlayerTriggerService.Get("iTrigger"); 
+iTrigger.Tags = [iAreaTag]; 
+iTrigger.Enable = true; 
+iTrigger.OnEnter.Add(function (player) {       
+if (player.Properties.Scores.Value > 200000){
+player.Ui.Hint.Value = "•вы купили гранаты•";
+player.inventory.Explosive.Value = true; 
+player.Properties.Scores.Value -= 200000;
+}else{player.Ui.Hint.Value = "требуется для гранаты •200000• а у вас: "+player.Properties.Scores.Value;
+} 
+});    
+var uuAreaTag = "40"; 
+var ViewsParameterName = "Vivews"; 
+var uuAreas = AreaService.GetByTag(uuAreaTag); 
+var uuView = AreaViewService.GetContext().Get("uuView"); 
+uuView.Color = {p: 22}; 
+uuView.Tags = [uuAreaTag]; 
+uuView.Enable = true; 
+var uuTrigger = AreaPlayerTriggerService.Get("uuTrigger"); 
+uuTrigger.Tags = [uuAreaTag]; 
+uuTrigger.Enable = true; 
+uuTrigger.OnEnter.Add(function (player) {       
+if (player.Properties.Scores.Value > 150000){
+player.Ui.Hint.Value = "•вы купили второстепенное оружие•";
+player.inventory.Secondary.Value = true; 
+player.Properties.Scores.Value -= 150000;
+}else{player.Ui.Hint.Value = "требуется для второстепенного оружие •150000• а у вас: "+player.Properties.Scores.Value;
+} 
+});    
+var wAreaTag = "50"; 
+var ViewsParameterName = "Vivews"; 
+var wAreas = AreaService.GetByTag(wAreaTag); 
+var wView = AreaViewService.GetContext().Get("wView"); 
+wView.Color = {p: 22}; 
+wView.Tags = [wAreaTag]; 
+wView.Enable = true; 
+var wTrigger = AreaPlayerTriggerService.Get("wTrigger"); 
+wTrigger.Tags = [wAreaTag]; 
+wTrigger.Enable = true; 
+wTrigger.OnEnter.Add(function (player) {       
+if (player.Properties.Scores.Value > 200000){
+player.Ui.Hint.Value = "•вы купили второстепенное оружие•";
+player.inventory.Build.Value = true; 
+player.Properties.Scores.Value -= 200000;
+}else{player.Ui.Hint.Value = "требуется для блоков •200000• а у вас: "+player.Properties.Scores.Value;
+} 
+});
+var swview = AreaViewService.GetContext().Get("swView");
+var Srop = Properties.GetContext();
+var swt = AreaPlayerTriggerService.Get("swtTrigger");
+ swview.Color = {r: 1};
+ swview.Enable = true;
+ swview.Tags = ["s"];
+swt.Tags = ["s"];
+swt.Enable = true;
+swt.OnEnter.Add(function(player){
+  var prop = player.Properties.Get('list').Value;
+
+if(prop < 2){
+player.Properties.Get('list').Value++;
+} else {
+player.Properties.Get('list').Value = 1;
+}
+ if(prop == 1){
+  Srop.Get("door").Value = 1;
+player.Ui.Hint.Value = "открыто";
+Build.Fill.Value = true;
+} else if(prop == 2){
+player.Ui.Hint.Value = "закрыто";
+Build.Fill.Value = false;
+  Srop.Get("door").Value = 2;
+    }
+});
+
+var LeDo = AreaPlayerTriggerService.Get("LeDoTrigger");
+var LeDoV = AreaViewService.GetContext().Get("dview");
+ LeDoV.Color = {p: 22};
+ LeDoV.Enable = true;
+ LeDoV.Tags = ["g"];
+LeDo.Tags = ["g"];
+LeDo.Enable = true;
+LeDo.OnEnter.Add(function(player){
+  if(Srop.Get("door").Value == 1){
+} else if(Srop.Get("door").Value == 2){ 
+  player.Spawns.Spawn();
+   }
+});
+LeDo.OnEnter.Add(function(player){
+  if(Srop.Get("door").Value == 2){
+  player.Spawns.Spawn();
+   }
+});
+
+var updTrg = AreaPlayerTriggerService.Get("UpdTrigger"); 
+updTrg.Tags = ["11"]; 
+updTrg.Enable = true; 
+updTrg.OnEnter.Add(function(){ 
+list = []; 
+curenc = 0; 
+ato = 0; 
+var e = Players.GetEnumerator(); 
+while(e.moveNext()){ 
+list.push(e.Current); 
+} 
+}); 
+var choseTrg = AreaPlayerTriggerService.Get("ChoseTrigger"); 
+choseTrg.Tags = ["22"]; 
+choseTrg.Enable = true; 
+choseTrg.OnEnter.Add(function(p){ 
+ato = list[curenc]; 
+p.Ui.Hint.Value="> "+ato; 
+if(curenc < (list.length - 1))curenc++; 
+else curenc = 0; 
+}); 
+var banTrg = AreaPlayerTriggerService.Get("BanTrigger") 
+banTrg.Tags = ["33"]; 
+banTrg.Enable = true; 
+banTrg.OnEnter.Add(function(p){ 
+Ban(ato); 
+p.Ui.Hint.Value=ato+" был забанен"
+function Ban(player){ 
+var p = player;
+p.Spawns.Spawn(); 
+p.Spawns.Despawn(); 
+p.Build.BuildRangeEnable.Value=false; 
+p.Ui.Hint.Value="";
+} 
+});
+
+DAreaTag = "A";
+var DTrigger = AreaPlayerTriggerService.Get("DTrigger"); 
+DTrigger.Tags = [DAreaTag]; 
+DTrigger.Enable = true; 
+DTrigger.OnEnter.Add(function (player) {       
+Teams.Get("Blue").Add(player);
+player.Ui.Hint.Value = "?"
+});
+BAreaTag = "B";
+var BTrigger = AreaPlayerTriggerService.Get("BTrigger"); 
+BTrigger.Tags = [BAreaTag]; 
+BTrigger.Enable = true; 
+BTrigger.OnEnter.Add(function (player) {       
+Teams.Get("Gey").Add(player);
+player.Ui.Hint.Value = "?"
+});
+var t1trigger = AreaPlayerTriggerService.Get("t1trigger");
+t1trigger.Tags = ["t1"];
+t1trigger.Enable = true;
+t1trigger.OnEnter.Add(function (player) { Ui.GetContext().Hint.Value = "•Ломание выкл для всех•"
+BreackGraph.OnlyPlayerBlocksDmg = true;
+});
+var t2trigger = AreaPlayerTriggerService.Get("t2trigger");
+t2trigger.Tags = ["t2"];
+t2trigger.Enable = true;
+t2trigger.OnEnter.Add(function (player) { Ui.GetContext().Hint.Value = "•Ломание вкл для всех•"
+BreackGraph.OnlyPlayerBlocksDmg = false;
+});
+var LLAreaTag = "400"; 
+var llTrigger = AreaPlayerTriggerService.Get("LLTrigger");
+llTrigger.Tags = [LLAreaTag]; 
+llTrigger.Enable = true; 
+llTrigger.OnEnter.Add(function (player) { player.Ui.Hint.Value = "ты получаешь рандомное количество очков";  
+player.Properties.Scores.Value += +Math.random() *10000; 
+});
+var OoTrigger = 
+AreaPlayerTriggerService.Get("OoTrigger");
+OoTrigger.Tags = ["Q"];
+OoTrigger.Enable = true;
+OoTrigger.OnEnter.Add(function (player) { 
+player.Ui.Hint.Value = ""
+});
+var JTrigger =
+AreaPlayerTriggerService.Get("JTrigger");
+JTrigger.Tags = ["W"];
+JTrigger.Enable = true;
+JTrigger.OnEnter.Add(function (player) { 
+player.Ui.Hint.Value = ""
+});
+var ZILTrigger =
+AreaPlayerTriggerService.Get("ZILTrigger"); 
+ZILTrigger.Tags = ["E"];
+ZILTrigger.Enable = true;
+ZILTrigger.OnEnter.Add(function (player) { 
+player.Ui.Hint.Value = ""
+}); 
+Teams.OnRequestJoinTeam.Add(function(player,team){team.Add(player);
+player.Properties.Get("Status").Value = "<B><color=red>?</color></B>";                                                                       
+});
+LeaderBoard.PlayerLeaderBoardValues = [
+ {
+  Value: "Status",
+  DisplayName: "<B>Status</B>",
+  ShortDisplayName: "<B>Status</B>"
+
+},
+{
+  Value: "Deaths", 
+  DisplayName: "<B>Deaths</B> ", 
+  ShortDisplayName: "<B>Deaths</B>" 
+}, 
+{ 
+  Value: "Scores", 
+  DisplayName: "<B>Scores</B> ", 
+  ShortDisplayName: "<B>Scores</B>" 
+}, 
+{ 
+  Value: "Kills", 
+  DisplayName: "<b>Kills</b>", 
+  ShortDisplayName: "<b>Kills</b>" 
+ } 
+]; 
+LeaderBoard.TeamWeightGetter.Set(function(team) { 
+ return team.Properties.Get("Deaths").Value;
+});
+
+LeaderBoard.PlayersWeightGetter.Set(function(player) {
+ return player.Properties.Get("Kills").Value;
+});
+//
+Damage.OnKill.Add(function(player, killed){ 
+  if (killed.Team != null && killed.Team != player.Team) {
+  ++player.Properties.Kills.Value;
+} 
+});
+Damage.OnDeath.Add(function(player){
+ player.Properties.Deaths.Value++;
+});
+Damage.GetContext().DamageOut.Value = true;
+Ui.GetContext().QuadsCount.Value = true;
+Spawns.GetContext().RespawnTime.Value = 0;
